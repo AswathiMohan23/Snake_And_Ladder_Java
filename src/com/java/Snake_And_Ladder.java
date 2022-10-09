@@ -1,53 +1,86 @@
 package com.java;
-//UC4
-//Repeat till the Player reaches the winning position 100. - Note In case
-// the player position moves below 0, then the player restarts from 0
+//UC5+UC6+UC7
+//2 players
 
 public class Snake_And_Ladder {
+    public static int count = 0, dice = 0;
+    public static int randomCheck() {
+        int max = 2, min = 0;
+        int randomCheck = (int) (Math.random() * (max - min + 1) + min);
+        return randomCheck;
+    }
+    public static int positionCheck() {
+        int positionCheck, positionMax = 6, positionMin = 1;
+        positionCheck = (int) (Math.random() * (positionMax - positionMin + 1) + positionMin);
+        return positionCheck;
+    }
     public static void main(String[] args) {
-        System.out.println("\nWelcome to snake and ladder");
-        int ladder = 1,player=0;
-        int snake = 1,max = 2, min = 0, count = 0, positionMax = 6, positionMin = 1;
-        for (int i = 1;player!=100 ; i++) {
-            i++;
-            int randomCheck = (int) (Math.random() * (max - min + 1) + min);
-            if (player == 100) {
-                int positionCheck = (int) (Math.random() * (positionMax - positionMin + 1) + positionMin);
-                System.out.println("your previous position  : " + player);
-                System.out.println("you got : " + positionCheck);
-                System.out.println("\nCongrats you got 100 and won the game");
-            } else if ((randomCheck == 1)&&(count==2)){
-                int positionCheck = (int) (Math.random() * (positionMax - positionMin + 1) + positionMin);
-                System.out.println("\nyour previous position  : " + player);
-                System.out.println("you got : " + positionCheck);
-                ladder = player + positionCheck;
-                if (ladder >= 100)
-                    ladder = 100;
-                player = ladder;
-                System.out.println("Ladder : now your position has gone to : " + player);
-            } else if ((randomCheck == 2)&&(count==2)) {
-                int positionCheck = (int) (Math.random() * (positionMax - positionMin + 1) + positionMin);
-                System.out.println("\nyour previous position  : " + player);
-                System.out.println("you got : " + positionCheck);
-                snake = player - positionCheck;
-                if (snake <= 1)
-                    snake = 1; // to change -ve to +ve
-                player = snake;
-                System.out.println("snake : ohh now your position has gone down to : " + player );
-            } else if ((randomCheck == 0)) {
-                int positionCheck = (int) (Math.random() * (positionMax - positionMin + 1) + positionMin);
+        int player1 = 0, player2 = 0;
+        System.out.println("\n Welcome to snake and ladder \n*******************************");
+        while ((player1 != 100) && (player2 != 100)){
+            if((player1 != 100) && (player2 != 100))
+                player1 = game(player1, " PLAYER 1 ");
+            if((player1 != 100) && (player2 != 100))
+                player2 = game(player2, " PLAYER 2 ");
+        }
+    }
+    public static int game(int player, String playerName) {
+        System.out.println("\n%%%%%%%%%%%%%%%%%%%%%%" + playerName + "%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        int randomCheck, positionCheck = 0;
+        while ((player != 100)) {
+            randomCheck = randomCheck();
+            if ((randomCheck == 1) && (count == 2)) {
+                positionCheck = positionCheck();
+                dice++;
+                player = ladder(positionCheck, player, dice, playerName);
+                return player;
+            } else if ((randomCheck == 2) && (count == 2)) {
+                positionCheck = positionCheck();
+                dice++;
+                player = snake(positionCheck, player, dice);
+                return player;
+            } else if ((randomCheck == 0) && (count == 0)) {
+                positionCheck = positionCheck();
+                dice++;
                 if ((count == 0) && (positionCheck == 1)) {
-                    System.out.println("\nyou got : " + positionCheck);
-                    System.out.println("you can start the game now");
+                    System.out.println("you got : " + positionCheck);
+                    System.out.println(playerName + " can start the game now");
                     player = 1;
-                    count = 2;}
-                else if((count == 0) && (positionCheck != 1)){
-                    System.out.println("\nyou got : " + positionCheck);
-                    System.out.println("No play : you need 1 to start the game try again");}
-
+                    count = 2;
+                } else if ((count == 0) && (positionCheck != 1)) {
+                    System.out.println("you got : " + positionCheck);
+                    System.out.println("No play for " + playerName + " you need 1 to start the game try again");
+                }
             }
         }
-
+        return player;
     }
-
+    public static int snake(int positionCheck, int player, int dice) {
+        int previousPosition = player;
+        System.out.println("\n your previous position  : " + previousPosition);
+        System.out.println(" you got : " + positionCheck);
+        int snake = player - positionCheck;
+        if (snake <= 1)
+            snake = 1; // to change -ve to +ve
+        player = snake;
+        System.out.println(" snake : ohh now your position has gone down to : " + player);
+        return player;
+    }
+    public static int ladder(int positionCheck, int player, int dice, String playerName) {
+        int previousPosition = player;
+        System.out.println("\n your previous position  : " + previousPosition);
+        System.out.println(" you got : " + positionCheck);
+        int ladder = player + positionCheck;
+        if (ladder > 100) {
+            System.out.println(" Your position is above 100 so to WIN ,stay in the previous position till you get 100");
+            ladder = previousPosition;}
+        player = ladder;
+        System.out.println(" Ladder : now your position has gone to : " + player);
+        if (player == 100) {
+            System.out.println(playerName + " threw dice " + dice + " times");
+            System.out.println("\n@@@@@@@@@@@@@@@@" + playerName + " WON THE GAME @@@@@@@@@@@@@@@@@@@@");
+            return player;
+        }
+        return player;
+    }
 }
