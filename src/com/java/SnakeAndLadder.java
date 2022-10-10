@@ -2,7 +2,7 @@ package com.java;
 //UC5+UC6+UC7
 //2 players
 
-public class Snake_And_Ladder {
+public class SnakeAndLadder {
     public static int count = 0, dice = 0;
     public static int randomCheck() {
         int max = 2, min = 0;
@@ -73,7 +73,8 @@ public class Snake_And_Ladder {
         int ladder = player + positionCheck;
         if (ladder > 100) {
             System.out.println(" Your position is above 100 so to WIN ,stay in the previous position till you get 100");
-            ladder = previousPosition;}
+            ladder = previousPosition;
+        }
         player = ladder;
         System.out.println(" Ladder : now your position has gone to : " + player);
         if (player == 100) {
